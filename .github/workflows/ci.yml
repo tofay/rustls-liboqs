@@ -1,0 +1,97 @@
+
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
+      - name: cargo fmt (check)
+        run: cargo fmt -- --check -l
+      - name: cargo clippy (warnings)
+        run: cargo clippy --all-targets -- -D warnings
+      - name: cargo clippy --no-default-features (warnings)
+        run: cargo clippy --no-default-features --all-targets -- -D warnings
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:41
+    steps:
+      - name: Install dependencies
+        run: dnf install -y gcc openssl-devel liboqs-devel oqsprovider
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
+      - name: Run cargo test
+        run: cargo test --tests
+      # https://github.com/rust-lang/cargo/issues/6669
+      - name: cargo test --doc
+        run: cargo test --doc
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:41
+    steps:
+      - name: Install dependencies
+        run: dnf install -y gcc openssl-devel liboqs-devel oqsprovider
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+          components: llvm-tools
+      - name: Cache build artifacts
+        uses: Swatinem/rust-cache@v2
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Generate coverage
+        run: cargo llvm-cov --lcov --output-path lcov.info
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lcov.info
+          path: lcov.info
+          retention-days: 1
+
+  upload-coverage:
+    name: Upload coverage
+    runs-on: ubuntu-latest
+    needs: coverage
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: lcov.info
+          path: lcov.info
+      - name: Report to codecov.io
+        uses: codecov/codecov-action@v5
+        with:
+          files: lcov.info/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
