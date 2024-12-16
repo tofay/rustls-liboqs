@@ -52,6 +52,22 @@ mod tests {
         );
     }
 
+    pub(crate) fn roundtrip_classical(ours: &dyn SupportedKxGroup, theirs: &dyn SupportedKxGroup) {
+        load_providers();
+
+        let our_kx = ours.start().unwrap();
+        let their_kx = theirs.start().unwrap();
+
+        let (_group, our_key) = our_kx.hybrid_component().unwrap();
+        let our_key = our_key.to_vec();
+
+        let peer_pub_key = their_kx.pub_key();
+        let our_secret = our_kx.complete_hybrid_component(peer_pub_key).unwrap();
+        let their_secret = their_kx.complete(&our_key).unwrap();
+
+        assert_eq!(our_secret.secret_bytes(), their_secret.secret_bytes());
+    }
+
     #[test]
     fn mlkem768() {
         roundtrip(MLKEM768, rustls_post_quantum::MLKEM768);
@@ -60,5 +76,10 @@ mod tests {
     #[test]
     fn x25519_mlkem768() {
         roundtrip(X25519MLKEM768, rustls_post_quantum::X25519MLKEM768);
+    }
+
+    #[test]
+    fn x25519_mlkem768_classical() {
+        roundtrip_classical(X25519MLKEM768, rustls_openssl::kx_group::X25519);
     }
 }

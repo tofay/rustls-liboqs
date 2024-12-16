@@ -98,4 +98,15 @@ impl rustls::crypto::ActiveKeyExchange for ReversingKeyExchangeActive {
     fn group(&self) -> NamedGroup {
         self.inner.group()
     }
+
+    fn hybrid_component(&self) -> Option<(NamedGroup, &[u8])> {
+        self.inner.hybrid_component()
+    }
+
+    fn complete_hybrid_component(
+        self: Box<Self>,
+        peer_pub_key: &[u8],
+    ) -> Result<SharedSecret, Error> {
+        self.inner.complete_hybrid_component(peer_pub_key)
+    }
 }
