@@ -10,7 +10,7 @@ repository = "https://github.com/tofay/rustls-openssl-post-quantum"
 documentation = "https://docs.rs/rustls-openssl-post-quantum"
 readme = "README.md"
 keywords = ["rustls", "openssl", "post-quantum", "liboqs"]
-categories = ["cryptography", "security", "networking"]
+categories = ["cryptography", "network-programming"]
 
 [dependencies]
 foreign-types = "0.3.1"
