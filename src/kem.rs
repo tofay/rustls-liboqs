@@ -12,7 +12,6 @@ use zeroize::Zeroize;
 /// [MLKEM]: https://datatracker.ietf.org/doc/draft-connolly-tls-mlkem-key-agreement
 pub const MLKEM768: &dyn SupportedKxGroup = &KxGroup::new(NamedGroup::MLKEM768, b"mlkem768\0");
 
-#[cfg(not(swapx25519hybrid))]
 /// This is the [X25519MLKEM768] key exchange.
 ///
 /// [X25519MLKEM768]: <https://datatracker.ietf.org/doc/draft-kwiatkowski-tls-ecdhe-mlkem/>
