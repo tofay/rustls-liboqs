@@ -7,8 +7,8 @@
 //!
 //! Note that `unwrap()` is used to deal with networking errors; this is not something
 //! that is sensible outside of example code.
+use rustls_liboqs::X25519MLKEM768;
 use rustls_openssl::custom_provider;
-use rustls_openssl_post_quantum::X25519MLKEM768;
 use std::io::{stdout, Read, Write};
 use std::net::TcpStream;
 use std::sync::Arc;

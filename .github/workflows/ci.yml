@@ -35,7 +35,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     container:
-      image: fedora:41
+      image: fedora:rawhide
     steps:
       - name: Install dependencies
         run: dnf install -y gcc openssl-devel liboqs-devel oqsprovider
@@ -57,7 +57,7 @@ jobs:
     name: Coverage
     runs-on: ubuntu-latest
     container:
-      image: fedora:41
+      image: fedora:rawhide
     steps:
       - name: Install dependencies
         run: dnf install -y gcc openssl-devel liboqs-devel oqsprovider
