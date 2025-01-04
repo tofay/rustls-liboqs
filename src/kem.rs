@@ -16,7 +16,7 @@ pub const MLKEM768: &dyn SupportedKxGroup = &KxGroup::new(NamedGroup::MLKEM768, 
 ///
 /// [X25519MLKEM768]: <https://datatracker.ietf.org/doc/draft-kwiatkowski-tls-ecdhe-mlkem/>
 pub const X25519MLKEM768: &dyn SupportedKxGroup =
-    &KxGroup::new(NamedGroup::X25519MLKEM768, b"x25519_mlkem768\0");
+    &KxGroup::new(NamedGroup::X25519MLKEM768, b"X25519MLKEM768\0");
 
 /// A key exchange group based on a key encapsulation mechanism.
 #[derive(Debug, Copy, Clone)]
