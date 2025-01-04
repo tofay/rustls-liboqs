@@ -1,13 +1,13 @@
 [package]
-name = "rustls-openssl-post-quantum"
+name = "rustls-liboqs"
 authors = ["Tom Fay <tom@teamfay.co.uk>"]
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "Experimental Rustls post-quantum key exchanges using OpenSSL and liboqs"
-homepage = "https://github.com/tofay/rustls-openssl-post-quantum"
-repository = "https://github.com/tofay/rustls-openssl-post-quantum"
-documentation = "https://docs.rs/rustls-openssl-post-quantum"
+homepage = "https://github.com/tofay/rustls-liboqs"
+repository = "https://github.com/tofay/rustls-liboqs"
+documentation = "https://docs.rs/rustls-liboqs"
 readme = "README.md"
 keywords = ["rustls", "openssl", "post-quantum", "liboqs"]
 categories = ["cryptography", "network-programming"]

@@ -2,14 +2,9 @@
 #![deny(missing_docs)]
 mod ffi;
 mod kem;
-#[cfg(swapx25519hybrid)]
-mod swap;
 
 pub use kem::MLKEM768;
-#[cfg(not(swapx25519hybrid))]
 pub use kem::X25519MLKEM768;
-#[cfg(swapx25519hybrid)]
-pub use swap::X25519MLKEM768;
 
 #[cfg(test)]
 mod tests {
